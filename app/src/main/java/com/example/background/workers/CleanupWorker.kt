@@ -11,7 +11,7 @@ import java.io.File
  * Cleans up temporary files generated during blurring process
  */
 private const val TAG = "CleanupWorker"
-class CleanupWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
+class CleanupWorker(context: Context, parameters: WorkerParameters) : Worker(context, parameters) {
 
     override fun doWork(): Result {
         // Makes a notification when the work starts and slows down the work so that

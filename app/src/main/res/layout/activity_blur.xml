@@ -89,6 +89,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cancel_work"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     />
 
                 <ProgressBar
@@ -106,6 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/go"
+                android:visibility="visible"
                 />
 
             <Button

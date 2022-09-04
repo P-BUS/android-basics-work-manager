@@ -17,7 +17,7 @@ import java.util.Locale
  * Saves the image to a permanent file
  */
 private const val TAG = "SaveImageToFileWorker"
-class SaveImageToFileWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
+class SaveImageToFileWorker(context: Context, parameters: WorkerParameters) : Worker(context, parameters) {
 
     private val title = "Blurred Image"
     private val dateFormatter = SimpleDateFormat(
