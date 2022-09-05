@@ -61,23 +61,27 @@ class BlurViewModel(application: Application) : ViewModel() {
                 ExistingWorkPolicy.REPLACE,
                 OneTimeWorkRequest.from(CleanupWorker::class.java)
             )
-
         // Add WorkRequests to blur the image the number of times requested
         for (i in 0 until blurLevel) {
             val blurBuilder = OneTimeWorkRequest.Builder(BlurWorker::class.java)
-
             // Input the Uri if this is the first blur operation
             // After the first blur operation the input will be the output of previous
             // blur operations.
             if (i == 0) {
                 blurBuilder.setInputData(createInputDataForUri())
             }
-
             continuation = continuation.then(blurBuilder.build())
         }
 
-        // Saves the file
+        // Create charging constraint
+        val constraints = Constraints.Builder()
+            .setRequiresStorageNotLow(true)
+            .setRequiresCharging(false)
+            .build()
+
+        // Add WorkRequest to save the image to the filesystem
         val save = OneTimeWorkRequestBuilder<SaveImageToFileWorker>()
+            .setConstraints(constraints)
             .addTag(TAG_OUTPUT)
             .build()
         continuation = continuation.then(save)
@@ -121,6 +125,10 @@ class BlurViewModel(application: Application) : ViewModel() {
 
     internal fun setOutputUri(outputImageUri: String?) {
         outputUri = uriOrNull(outputImageUri)
+    }
+
+    internal fun cancelWork() {
+        workManager.cancelUniqueWork(IMAGE_MANIPULATION_WORK_NAME)
     }
 
     class BlurViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
